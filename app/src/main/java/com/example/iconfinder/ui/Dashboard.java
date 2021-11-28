@@ -15,15 +15,18 @@ import com.example.iconfinder.custom.BucketRecyclerView;
 import com.example.iconfinder.models.IconModel;
 import com.example.iconfinder.models.IconSetModel;
 import com.example.iconfinder.viewmodel.IconListViewModel;
+import com.example.iconfinder.viewmodel.IconSetViewModel;
 
 import java.util.List;
 
 public class Dashboard extends AppCompatActivity {
 
-    private List<IconModel> icons;
-    private IconListAdapter iconListAdapter;
+    //private List<IconModel> icons;
+    //private IconListAdapter iconListAdapter;
     private IconSetAdapter iconSetAdapter;
-    private IconListViewModel viewModel;
+    //private IconListViewModel viewModel;
+    private IconSetViewModel iconSetViewModel;
+    private List<IconSetModel> iconSets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,19 +52,19 @@ public class Dashboard extends AppCompatActivity {
 //        });
 
         BucketRecyclerView recyclerView = findViewById(R.id.rv_mainIcons);
-        LinearLayoutManager layoutManager = new GridLayoutManager(this,4);
+        LinearLayoutManager layoutManager = new GridLayoutManager(this,2);
         recyclerView.setLayoutManager(layoutManager);
-//        iconSetAdapter = new IconSetAdapter();
-        recyclerView.setAdapter(iconListAdapter);
+        iconSetAdapter = new IconSetAdapter(this,iconSets);
+        recyclerView.setAdapter(iconSetAdapter);
 
-        viewModel = new ViewModelProvider(this).get(IconListViewModel.class);
+        iconSetViewModel = new ViewModelProvider(this).get(IconSetViewModel.class);
 
-        viewModel.getIconData().observe(this, new Observer<List<IconModel>>() {
+        iconSetViewModel.getIconSets().observe(this, new Observer<List<IconSetModel>>() {
             @Override
-            public void onChanged(List<IconModel> iconModels) {
-                if (iconModels != null){
-                    icons = iconModels;
-                    iconListAdapter.setIconList(iconModels);
+            public void onChanged(List<IconSetModel> iconSetModels) {
+                if (iconSetModels != null){
+                    iconSets = iconSetModels;
+                    iconSetAdapter.setIconSetList(iconSetModels);
                 }
             }
         });

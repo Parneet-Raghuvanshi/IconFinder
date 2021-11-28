@@ -15,6 +15,6 @@ public interface Api {
     Call<ResponseBody> mainIconsApi(@Header(authHead) String userToken,@Path("iconSetId") int iconSetId,@Query("count") int count);
 
     @GET("iconsets")
-    Call<ResponseBody> allIconSet(@Header(authHead) String userToken,@Query("count") int count,@Query("after") int after);
+    Call<ResponseBody> allIconSet(@Header(authHead) String userToken,@Query("count") int count);
 
 }

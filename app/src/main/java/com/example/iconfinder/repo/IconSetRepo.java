@@ -27,7 +27,7 @@ public class IconSetRepo {
     private final Call<ResponseBody> iconSetCall;
 
     public IconSetRepo() {
-        iconSetCall = RetrofitClient.getInstance().getApi().allIconSet(Constants.TOKEN,16,10);
+        iconSetCall = RetrofitClient.getInstance().getApi().allIconSet(Constants.TOKEN,16);
     }
 
     public MutableLiveData<List<IconSetModel>> getIconSets() {
@@ -51,9 +51,16 @@ public class IconSetRepo {
                             iconSetModel.setName(singleSet.optString("name"));
 
                             //---( Fetch it's icons )---//
+                            Log.d("HERE IN LOOP == ","");
                             List<IconModel> icons = getIconFromIconSet(iconSetModel.getId());
                             iconSetModel.setIcons(icons);
+
+                            //---( adding to main list )---//
+                            iconSetModels.add(iconSetModel);
                         }
+
+                        //---( Updating mutable Live data )---//
+                        iconSets.postValue(iconSetModels);
 
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
@@ -61,7 +68,7 @@ public class IconSetRepo {
                 }
                 else {
                     try {
-                        Log.d("ERROR"," === "+response.errorBody().string());
+                        Log.i("ERROR"," === "+response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -78,6 +85,7 @@ public class IconSetRepo {
     }
 
     private List<IconModel> getIconFromIconSet(int id) {
+        Log.i("HERE IN ICONS == ","");
         Call<ResponseBody> iconsCall = RetrofitClient.getInstance().getApi().mainIconsApi(Constants.TOKEN,id,100);
 
         final List<IconModel> mainIcons = new ArrayList<>();

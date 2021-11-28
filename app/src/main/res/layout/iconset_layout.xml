@@ -29,6 +29,7 @@
                     android:layout_height="100dp">
 
                     <ImageView
+                        android:padding="10dp"
                         android:id="@+id/icon_image_1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -39,11 +40,11 @@
                         android:scaleType="fitCenter" />
 
                     <ImageView
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/ic_baseline_stars_24"
                         android:id="@+id/prime_star_1"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"/>
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_baseline_stars_24" />
 
                 </RelativeLayout>
 
@@ -54,6 +55,7 @@
                     android:layout_height="100dp">
 
                     <ImageView
+                        android:padding="10dp"
                         android:id="@+id/icon_image_2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -67,8 +69,8 @@
                         android:layout_alignParentRight="true"
                         android:src="@drawable/ic_baseline_stars_24"
                         android:id="@+id/prime_star_2"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"/>
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"/>
 
                 </RelativeLayout>
 
@@ -79,6 +81,7 @@
                     android:layout_height="100dp">
 
                     <ImageView
+                        android:padding="10dp"
                         android:id="@+id/icon_image_3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -92,8 +95,8 @@
                         android:layout_alignParentRight="true"
                         android:src="@drawable/ic_baseline_stars_24"
                         android:id="@+id/prime_star_3"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"/>
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"/>
 
                 </RelativeLayout>
 
@@ -104,6 +107,7 @@
                     android:layout_height="100dp">
 
                     <ImageView
+                        android:padding="10dp"
                         android:id="@+id/icon_image_4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -117,8 +121,8 @@
                         android:layout_alignParentRight="true"
                         android:src="@drawable/ic_baseline_stars_24"
                         android:id="@+id/prime_star_4"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"/>
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"/>
 
                 </RelativeLayout>
 
