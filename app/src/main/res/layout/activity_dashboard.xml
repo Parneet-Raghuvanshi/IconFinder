@@ -16,6 +16,12 @@
         android:background="@drawable/btn_shape_round"
         android:iconifiedByDefault="false"
         android:queryBackground="@android:color/transparent"
-        android:queryHint="Search"/>
+        android:queryHint="Search" />
+
+    <com.example.iconfinder.custom.BucketRecyclerView
+        android:id="@+id/rv_mainIcons"
+        android:layout_below="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

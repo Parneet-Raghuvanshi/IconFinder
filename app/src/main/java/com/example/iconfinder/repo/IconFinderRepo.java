@@ -87,7 +87,6 @@ public class IconFinderRepo {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 call.cancel();
-                Log.d("Calll Not MAde ------","nnnnnnnnnnnnnn" );
             }
         });
 
