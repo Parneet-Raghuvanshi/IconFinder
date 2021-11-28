@@ -4,17 +4,17 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.iconfinder.models.IconModel;
-import com.example.iconfinder.repo.IconFinderRepo;
+import com.example.iconfinder.repo.MainIconRepo;
 
 import java.util.List;
 
 public class IconListViewModel extends ViewModel {
 
     private final MutableLiveData<List<IconModel>> iconData;
-    private final IconFinderRepo iconFinderRepo;
+    private final MainIconRepo iconFinderRepo;
 
     public IconListViewModel() {
-        iconFinderRepo = new IconFinderRepo();
+        iconFinderRepo = new MainIconRepo();
         this.iconData = iconFinderRepo.getMainIcons();
     }
 

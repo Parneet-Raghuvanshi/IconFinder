@@ -1,4 +1,4 @@
-package com.example.iconfinder;
+package com.example.iconfinder.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.iconfinder.Constants;
 import com.example.iconfinder.models.IconModel;
+import com.example.iconfinder.models.IconSetModel;
 import com.example.iconfinder.retrofit.RetrofitClient;
 
 import org.json.JSONArray;
@@ -21,23 +22,71 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IconFinderRepo {
+public class IconSetRepo {
 
-    private final Call<ResponseBody> mainCall;
+    private final Call<ResponseBody> iconSetCall;
 
-    public IconFinderRepo() {
-        mainCall = RetrofitClient.getInstance().getApi().mainIconsApi(Constants.TOKEN,"265311");
+    public IconSetRepo() {
+        iconSetCall = RetrofitClient.getInstance().getApi().allIconSet(Constants.TOKEN,16,10);
     }
 
-    public MutableLiveData<List<IconModel>> getMainIcons() {
-        final MutableLiveData<List<IconModel>> mainIcons = new MutableLiveData<>();
+    public MutableLiveData<List<IconSetModel>> getIconSets() {
+        final MutableLiveData<List<IconSetModel>> iconSets = new MutableLiveData<>();
 
-        mainCall.enqueue(new Callback<ResponseBody>() {
+        iconSetCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    JSONObject mainJsonObject = null;
+                    List<IconSetModel> iconSetModels = new ArrayList<>();
+
+                    try {
+                        mainJsonObject = new JSONObject(response.body().string());
+                        //---( Extracting IconSets Array )---//
+                        JSONArray iconSetsArray = mainJsonObject.optJSONArray("iconsets");
+                        for (int i=0;i<iconSetsArray.length();i++){
+                            IconSetModel iconSetModel = new IconSetModel();
+                            JSONObject singleSet = iconSetsArray.optJSONObject(i);
+                            iconSetModel.setId(singleSet.optInt("iconset_id"));
+                            iconSetModel.setName(singleSet.optString("name"));
+
+                            //---( Fetch it's icons )---//
+                            List<IconModel> icons = getIconFromIconSet(iconSetModel.getId());
+                            iconSetModel.setIcons(icons);
+                        }
+
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        Log.d("ERROR"," === "+response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                call.cancel();
+            }
+        });
+
+        return iconSets;
+    }
+
+    private List<IconModel> getIconFromIconSet(int id) {
+        Call<ResponseBody> iconsCall = RetrofitClient.getInstance().getApi().mainIconsApi(Constants.TOKEN,id,100);
+
+        final List<IconModel> mainIcons = new ArrayList<>();
+
+        iconsCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){
                     JSONObject mainJsonObject = null;
-                    List<IconModel> tempList = new ArrayList<>();
                     //---( Deserialization of JSON )---//
                     try {
                         mainJsonObject = new JSONObject(response.body().string());
@@ -47,7 +96,7 @@ public class IconFinderRepo {
                             IconModel tempModel = new IconModel();
                             //---( Is Premium and IconID )---//
                             tempModel.setPremium(iconObject.optBoolean("is_premium"));
-                            tempModel.setId(iconObject.optLong("icon_id"));
+                            tempModel.setId(iconObject.optInt("icon_id"));
 
                             //---( Preview Url + Download Url )---//
                             JSONArray sizeArray = iconObject.optJSONArray("raster_sizes");
@@ -65,12 +114,8 @@ public class IconFinderRepo {
                             tempModel.setName(tags.optString(0));
 
                             //---( Adding final Model to the List )---//
-                            tempList.add(tempModel);
+                            mainIcons.add(tempModel);
                         }
-
-                        //---( Updating mutable Live data )---//
-                        mainIcons.postValue(tempList);
-
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
                     }

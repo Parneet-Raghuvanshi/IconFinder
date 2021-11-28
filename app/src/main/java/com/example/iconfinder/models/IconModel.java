@@ -2,7 +2,7 @@ package com.example.iconfinder.models;
 
 public class IconModel {
     String name;
-    long id;
+    int id;
     String previewUrl;
     String downloadUrl;
     boolean isPremium;
@@ -10,7 +10,7 @@ public class IconModel {
     public IconModel() {
     }
 
-    public IconModel(String name, long id, String previewUrl, String downloadUrl, boolean isPremium) {
+    public IconModel(String name, int id, String previewUrl, String downloadUrl, boolean isPremium) {
         this.name = name;
         this.id = id;
         this.previewUrl = previewUrl;
@@ -26,11 +26,11 @@ public class IconModel {
         this.name = name;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
