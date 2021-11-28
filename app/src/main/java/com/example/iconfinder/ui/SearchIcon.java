@@ -3,20 +3,17 @@ package com.example.iconfinder.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import com.example.iconfinder.R;
 import com.example.iconfinder.adapter.IconListAdapter;
@@ -30,41 +27,59 @@ import com.example.iconfinder.viewmodel.IconSetViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dashboard extends AppCompatActivity {
+public class SearchIcon extends AppCompatActivity {
 
-    private IconSetAdapter iconSetAdapter;
-    private IconSetViewModel iconSetViewModel;
-    private List<IconSetModel> iconSets = new ArrayList<>();
-    private ImageView searchIcon;
     private ProgressBar progressBar,progressBarMain;
+    private LinearLayout searchNow;
+    private List<IconModel> iconsList = new ArrayList<>();
+    private IconListAdapter iconListAdapter;
+    private IconListViewModel iconListViewModel;
+    private SearchView searchView;
+    private String q;
     private boolean isScrolling;
+    int scrollCount = 0;
     int currentItems, totalItems, scrollOutItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_search_icon);
 
         progressBar = findViewById(R.id.progress);
         progressBarMain = findViewById(R.id.progress_main);
-        progressBarMain.setVisibility(View.VISIBLE);
-        searchIcon = findViewById(R.id.search_icon);
+        searchNow = findViewById(R.id.search_now);
+        searchView = findViewById(R.id.search_bar);
 
-        BucketRecyclerView recyclerView = findViewById(R.id.rv_mainIcons);
-        LinearLayoutManager layoutManager = new GridLayoutManager(this,2);
+        BucketRecyclerView recyclerView = findViewById(R.id.rv_search_icon);
+        LinearLayoutManager layoutManager = new GridLayoutManager(this,4);
         recyclerView.setLayoutManager(layoutManager);
-        iconSetAdapter = new IconSetAdapter(this,iconSets);
-        recyclerView.setAdapter(iconSetAdapter);
+        iconListAdapter = new IconListAdapter(this,iconsList);
+        recyclerView.setAdapter(iconListAdapter);
 
-        iconSetViewModel = new ViewModelProvider(this).get(IconSetViewModel.class);
-        iconSetViewModel.getIconSets(null).observe(this, new Observer<List<IconSetModel>>() {
+        iconListViewModel = new ViewModelProvider(this).get(IconListViewModel.class);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onChanged(List<IconSetModel> iconSetModels) {
-                if (iconSetModels != null){
-                    iconSets.addAll(iconSetModels);
-                    progressBarMain.setVisibility(View.GONE);
-                    iconSetAdapter.notifyDataSetChanged();
-                }
+            public boolean onQueryTextSubmit(String query) {
+                iconsList.clear();
+                q = query;
+                searchNow.setVisibility(View.GONE);
+                progressBarMain.setVisibility(View.VISIBLE);
+                //---( Tobedone --)
+                iconListViewModel.getIconData(query,null).observe(SearchIcon.this, new Observer<List<IconModel>>() {
+                    @Override
+                    public void onChanged(List<IconModel> iconModels) {
+                        progressBarMain.setVisibility(View.GONE);
+                        iconsList.addAll(iconModels);
+                        iconListAdapter.notifyDataSetChanged();
+                    }
+                });
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
 
@@ -87,27 +102,17 @@ public class Dashboard extends AppCompatActivity {
                 if(isScrolling && (currentItems + scrollOutItems == totalItems))
                 {
                     isScrolling = false;
-                    int id = iconSets.get(iconSets.size()-1).getId();
+                    scrollCount++;
                     progressBar.setVisibility(View.VISIBLE);
-                    iconSetViewModel.getIconSets(id).observe(Dashboard.this, new Observer<List<IconSetModel>>() {
+                    iconListViewModel.getIconData(q,40*scrollCount).observe(SearchIcon.this, new Observer<List<IconModel>>() {
                         @Override
-                        public void onChanged(List<IconSetModel> iconSetModels) {
-                            if (iconSetModels != null){
-                                iconSets.addAll(iconSetModels);
-                                iconSetAdapter.notifyDataSetChanged();
-                                progressBar.setVisibility(View.GONE);
-                            }
+                        public void onChanged(List<IconModel> iconModels) {
+                            progressBar.setVisibility(View.GONE);
+                            iconsList.addAll(iconModels);
+                            iconListAdapter.notifyDataSetChanged();
                         }
                     });
                 }
-            }
-        });
-
-        searchIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Dashboard.this,SearchIcon.class);
-                startActivity(intent);
             }
         });
     }

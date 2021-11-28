@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.iconfinder.Constants;
+import com.example.iconfinder.helpers.Constants;
 import com.example.iconfinder.models.IconModel;
 import com.example.iconfinder.models.IconSetModel;
 import com.example.iconfinder.retrofit.RetrofitClient;
@@ -26,8 +26,9 @@ public class IconSetRepo {
 
     private final Call<ResponseBody> iconSetCall;
 
-    public IconSetRepo() {
-        iconSetCall = RetrofitClient.getInstance().getApi().allIconSet(Constants.TOKEN,16);
+    public IconSetRepo(Integer after) {
+        //---( Setup 0 for non premium )---//
+        iconSetCall = RetrofitClient.getInstance().getApi().allIconSet(Constants.TOKEN,16,0,after);
     }
 
     public MutableLiveData<List<IconSetModel>> getIconSets() {

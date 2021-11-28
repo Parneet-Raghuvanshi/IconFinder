@@ -10,15 +10,15 @@ import java.util.List;
 
 public class IconSetViewModel extends ViewModel {
 
-    private final MutableLiveData<List<IconSetModel>> iconSets;
-    private final IconSetRepo iconSetRepo;
+    private MutableLiveData<List<IconSetModel>> iconSets;
+    private IconSetRepo iconSetRepo;
 
     public IconSetViewModel() {
-        iconSetRepo = new IconSetRepo();
-        this.iconSets = iconSetRepo.getIconSets();
     }
 
-    public MutableLiveData<List<IconSetModel>> getIconSets() {
+    public MutableLiveData<List<IconSetModel>> getIconSets(Integer after) {
+        iconSetRepo = new IconSetRepo(after);
+        iconSets = iconSetRepo.getIconSets();
         return iconSets;
     }
 }

@@ -5,23 +5,56 @@
     android:layout_height="match_parent"
     tools:context=".ui.Dashboard">
 
-    <SearchView
-        android:id="@+id/search_bar"
+    <RelativeLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/btn_shape_round"
-        android:iconifiedByDefault="false"
-        android:queryBackground="@android:color/transparent"
-        android:queryHint="Search" />
+        android:layout_height="56dp">
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:text="Latest Posted"
+            android:id="@+id/iconset_name_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="56dp"
+            android:textColor="@color/black"
+            android:textSize="24sp"/>
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/loupe"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+
+    </RelativeLayout>
 
     <com.example.iconfinder.custom.BucketRecyclerView
         android:id="@+id/rv_mainIcons"
-        android:layout_below="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar" />
+
+    <ProgressBar
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/black"
+        android:id="@+id/progress_main"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ProgressBar
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/black"
+        android:visibility="gone"
+        android:id="@+id/progress"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

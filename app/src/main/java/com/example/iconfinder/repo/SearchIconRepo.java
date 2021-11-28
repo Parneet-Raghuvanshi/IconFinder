@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.iconfinder.Constants;
+import com.example.iconfinder.helpers.Constants;
 import com.example.iconfinder.models.IconModel;
 import com.example.iconfinder.retrofit.RetrofitClient;
 
@@ -21,18 +21,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainIconRepo {
+public class SearchIconRepo {
 
-    private final Call<ResponseBody> mainCall;
+    private final Call<ResponseBody> searchCall;
 
-    public MainIconRepo() {
-        mainCall = RetrofitClient.getInstance().getApi().mainIconsApi(Constants.TOKEN,765311,100);
+    public SearchIconRepo(String query,Integer offset) {
+        searchCall = RetrofitClient.getInstance().getApi().searchIcon(Constants.TOKEN,query,40,0,offset);
     }
 
     public MutableLiveData<List<IconModel>> getMainIcons() {
         final MutableLiveData<List<IconModel>> mainIcons = new MutableLiveData<>();
 
-        mainCall.enqueue(new Callback<ResponseBody>() {
+        searchCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){

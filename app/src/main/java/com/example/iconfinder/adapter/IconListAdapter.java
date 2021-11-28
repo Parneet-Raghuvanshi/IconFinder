@@ -25,11 +25,6 @@ public class IconListAdapter extends RecyclerView.Adapter<IconListAdapter.MyView
         this.list = list;
     }
 
-    public void setIconList(List<IconModel> list) {
-        this.list = list;
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

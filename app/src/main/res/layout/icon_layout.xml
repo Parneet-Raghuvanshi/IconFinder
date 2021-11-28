@@ -24,11 +24,12 @@
                 android:layout_height="match_parent"/>
 
             <ImageView
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_baseline_stars_24"
+                android:visibility="gone"
                 android:id="@+id/prime_star"
                 android:layout_width="20dp"
-                android:layout_height="20dp"/>
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_baseline_stars_24" />
 
         </RelativeLayout>
 
