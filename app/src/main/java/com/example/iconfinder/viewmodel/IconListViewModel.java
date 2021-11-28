@@ -1,8 +1,5 @@
 package com.example.iconfinder.viewmodel;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -16,7 +13,7 @@ public class IconListViewModel extends ViewModel {
     private final MutableLiveData<List<IconModel>> iconData;
     private final IconFinderRepo iconFinderRepo;
 
-    public IconListViewModel(@NonNull Application application) {
+    public IconListViewModel() {
         iconFinderRepo = new IconFinderRepo();
         this.iconData = iconFinderRepo.getMainIcons();
     }
