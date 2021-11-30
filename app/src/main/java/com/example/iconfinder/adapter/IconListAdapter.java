@@ -1,12 +1,13 @@
 package com.example.iconfinder.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -15,11 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.iconfinder.R;
 import com.example.iconfinder.models.IconModel;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class IconListAdapter extends RecyclerView.Adapter<IconListAdapter.MyViewHolder> {
 
@@ -50,19 +49,27 @@ public class IconListAdapter extends RecyclerView.Adapter<IconListAdapter.MyView
         holder.mainCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Runnable runnable = new Runnable() {
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context,R.style.BottomSheetDialogTheme);
+                bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
+                bottomSheetDialog.setCanceledOnTouchOutside(true);
+
+                //---( Bottom Sheet Variables )---//
+                ImageView iconImage = bottomSheetDialog.findViewById(R.id.icon_image);
+                TextView textView = bottomSheetDialog.findViewById(R.id.icon_name);
+                Button button = bottomSheetDialog.findViewById(R.id.download_btn);
+                ProgressBar progressBar = bottomSheetDialog.findViewById(R.id.progress);
+
+                Glide.with(context).load(tempIcon.getPreviewUrl()).into(iconImage);
+                textView.setText(tempIcon.getName());
+                button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        try {
-                            Bitmap  bitmap = Glide.with(context).asBitmap().load(tempIcon.getPreviewUrl()).into(100,100).get();
-                            SaveImage(bitmap,tempIcon.getName());
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    public void onClick(View v) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        button.setVisibility(View.GONE);
                     }
-                };
-                Thread t = new Thread(runnable);
-                t.start();
+                });
+
+                bottomSheetDialog.show();
             }
         });
     }
@@ -74,25 +81,6 @@ public class IconListAdapter extends RecyclerView.Adapter<IconListAdapter.MyView
         }
         return 0;
     }
-
-    private static void SaveImage(Bitmap finalBitmap,String name) {
-
-        File myDir= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
-        String fname = "Image-"+name+".png";
-        File file = new File (myDir, fname);
-        if (file.exists ()) file.delete ();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.flush();
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 

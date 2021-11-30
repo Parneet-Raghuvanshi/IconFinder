@@ -63,6 +63,7 @@ public class SearchIcon extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
                 iconsList.clear();
                 q = query;
                 searchNow.setVisibility(View.GONE);
