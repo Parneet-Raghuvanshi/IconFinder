@@ -2,6 +2,7 @@ package com.example.iconfinder.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -36,7 +37,8 @@ public class Dashboard extends AppCompatActivity {
     private IconSetViewModel iconSetViewModel;
     private List<IconSetModel> iconSets = new ArrayList<>();
     private ImageView searchIcon;
-    private ProgressBar progressBar,progressBarMain;
+    private ProgressBar progressBarMain;
+    private CardView progressBar;
     private boolean isScrolling;
     int currentItems, totalItems, scrollOutItems;
 

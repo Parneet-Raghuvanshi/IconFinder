@@ -2,6 +2,7 @@ package com.example.iconfinder.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -29,7 +30,8 @@ import java.util.List;
 
 public class SearchIcon extends AppCompatActivity {
 
-    private ProgressBar progressBar,progressBarMain;
+    private ProgressBar progressBarMain;
+    private CardView progressBar;
     private LinearLayout searchNow;
     private List<IconModel> iconsList = new ArrayList<>();
     private IconListAdapter iconListAdapter;
