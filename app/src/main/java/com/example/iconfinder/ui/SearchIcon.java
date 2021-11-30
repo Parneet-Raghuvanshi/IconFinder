@@ -47,6 +47,8 @@ public class SearchIcon extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_icon);
 
+        View view = findViewById(android.R.id.content);
+
         progressBar = findViewById(R.id.progress);
         progressBarMain = findViewById(R.id.progress_main);
         searchNow = findViewById(R.id.search_now);
@@ -55,7 +57,7 @@ public class SearchIcon extends AppCompatActivity {
         BucketRecyclerView recyclerView = findViewById(R.id.rv_search_icon);
         LinearLayoutManager layoutManager = new GridLayoutManager(this,4);
         recyclerView.setLayoutManager(layoutManager);
-        iconListAdapter = new IconListAdapter(this,iconsList);
+        iconListAdapter = new IconListAdapter(this,iconsList,view);
         recyclerView.setAdapter(iconListAdapter);
 
         iconListViewModel = new ViewModelProvider(this).get(IconListViewModel.class);

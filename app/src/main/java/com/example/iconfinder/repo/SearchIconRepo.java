@@ -52,7 +52,7 @@ public class SearchIconRepo {
                             //---( Preview Url + Download Url )---//
                             JSONArray sizeArray = iconObject.optJSONArray("raster_sizes");
                             assert sizeArray != null;
-                            JSONObject size256 = sizeArray.optJSONObject(6);
+                            JSONObject size256 = sizeArray.optJSONObject(7);
                             JSONArray formats = size256.optJSONArray("formats");
                             assert formats != null;
                             JSONObject finalSizes = formats.optJSONObject(0);

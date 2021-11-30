@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +26,7 @@ import com.example.iconfinder.R;
 import com.example.iconfinder.adapter.IconListAdapter;
 import com.example.iconfinder.adapter.IconSetAdapter;
 import com.example.iconfinder.custom.BucketRecyclerView;
+import com.example.iconfinder.custom.CustomSnacks;
 import com.example.iconfinder.models.IconModel;
 import com.example.iconfinder.models.IconSetModel;
 import com.example.iconfinder.viewmodel.IconListViewModel;
@@ -41,11 +45,22 @@ public class Dashboard extends AppCompatActivity {
     private CardView progressBar;
     private boolean isScrolling;
     int currentItems, totalItems, scrollOutItems;
+    private static final int WRITE_EXTERNAL_STORAGE_CODE = 1;
+    private CustomSnacks customSnacks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        customSnacks = new CustomSnacks();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                String[] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permission,WRITE_EXTERNAL_STORAGE_CODE);
+            }
+        }
 
         progressBar = findViewById(R.id.progress);
         progressBarMain = findViewById(R.id.progress_main);
@@ -112,5 +127,22 @@ public class Dashboard extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        View view = findViewById(android.R.id.content);
+        switch (requestCode) {
+            case WRITE_EXTERNAL_STORAGE_CODE:
+                if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //---( Permission Granted )---//
+                    customSnacks.successSnack(view,"Storage Permission Granted!");
+                }
+                else {
+                    //---( Permission Denied )---//
+                    customSnacks.failSnack(view,"Storage Permission Denied!");
+                }
+        }
     }
 }

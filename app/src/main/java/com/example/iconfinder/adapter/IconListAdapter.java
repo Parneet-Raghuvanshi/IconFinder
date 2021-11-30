@@ -1,6 +1,10 @@
 package com.example.iconfinder.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,19 +19,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.iconfinder.R;
+import com.example.iconfinder.custom.CustomSnacks;
 import com.example.iconfinder.models.IconModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 public class IconListAdapter extends RecyclerView.Adapter<IconListAdapter.MyViewHolder> {
 
     private Context context;
+    private View view;
     private List<IconModel> list;
+    private CustomSnacks customSnacks;
 
-    public IconListAdapter(Context context, List<IconModel> list) {
+    public IconListAdapter(Context context, List<IconModel> list,View view) {
         this.context = context;
         this.list = list;
+        this.view = view;
+        customSnacks = new CustomSnacks();
     }
 
     @NonNull
@@ -64,11 +78,33 @@ public class IconListAdapter extends RecyclerView.Adapter<IconListAdapter.MyView
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        OutputStream outputStream;
                         progressBar.setVisibility(View.VISIBLE);
                         button.setVisibility(View.GONE);
+
+                        //---( Download Here )---//
+                        BitmapDrawable bitmapDrawable = (BitmapDrawable) iconImage.getDrawable();
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+
+                        File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                        File dir = new File(filePath.getAbsolutePath());
+                        dir.mkdir();
+                        File file = new File(dir,tempIcon.getName()+"_"+System.currentTimeMillis()+".png");
+                        try {
+                            outputStream = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.PNG,100,outputStream);
+                            outputStream.flush();
+                            outputStream.close();
+                            progressBar.setVisibility(View.GONE);
+                            button.setVisibility(View.VISIBLE);
+                            bottomSheetDialog.dismiss();
+                            customSnacks.successSnack(view,"Saved to Downloads, Thank You for downloading this Icon!");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            customSnacks.failSnack(view,"Download Failed, Please try again!");
+                        }
                     }
                 });
-
                 bottomSheetDialog.show();
             }
         });

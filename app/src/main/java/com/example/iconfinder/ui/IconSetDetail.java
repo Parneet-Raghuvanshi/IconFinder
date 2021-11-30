@@ -32,6 +32,8 @@ public class IconSetDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_icon_set_detail);
 
+        View view = findViewById(android.R.id.content);
+
         iconHead = findViewById(R.id.iconset_name_head);
         backBtn = findViewById(R.id.back_btn);
 
@@ -43,7 +45,7 @@ public class IconSetDetail extends AppCompatActivity {
         BucketRecyclerView recyclerView = findViewById(R.id.rv_iconset_detail);
         LinearLayoutManager layoutManager = new GridLayoutManager(this,4);
         recyclerView.setLayoutManager(layoutManager);
-        iconListAdapter = new IconListAdapter(this,icons);
+        iconListAdapter = new IconListAdapter(this,icons,view);
         recyclerView.setAdapter(iconListAdapter);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
