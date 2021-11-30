@@ -41,28 +41,29 @@ public class IconSetAdapter extends RecyclerView.Adapter<IconSetAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final IconSetModel transferModel = this.iconSetModelList.get(position);
-        holder.iconSetName.setText(this.iconSetModelList.get(position).getName());
+        holder.iconSetName.setText(transferModel.getName());
+
         if (!this.iconSetModelList.get(position).getIcons().isEmpty()) {
-            Glide.with(context).load(this.iconSetModelList.get(position).getIcons().get(0).getPreviewUrl()).into(holder.iconImage1);
-            if (this.iconSetModelList.get(position).getIcons().get(0).isPremium()) {
+            Glide.with(context).load(transferModel.getIcons().get(0).getPreviewUrl()).into(holder.iconImage1);
+            if (transferModel.getIcons().get(0).isPremium()) {
                 holder.isPrime1.setVisibility(View.VISIBLE);
             } else {
                 holder.isPrime1.setVisibility(View.GONE);
             }
-            Glide.with(context).load(this.iconSetModelList.get(position).getIcons().get(1).getPreviewUrl()).into(holder.iconImage2);
-            if (this.iconSetModelList.get(position).getIcons().get(1).isPremium()) {
+            Glide.with(context).load(transferModel.getIcons().get(1).getPreviewUrl()).into(holder.iconImage2);
+            if (transferModel.getIcons().get(1).isPremium()) {
                 holder.isPrime2.setVisibility(View.VISIBLE);
             } else {
                 holder.isPrime2.setVisibility(View.GONE);
             }
-            Glide.with(context).load(this.iconSetModelList.get(position).getIcons().get(2).getPreviewUrl()).into(holder.iconImage3);
-            if (this.iconSetModelList.get(position).getIcons().get(2).isPremium()) {
+            Glide.with(context).load(transferModel.getIcons().get(2).getPreviewUrl()).into(holder.iconImage3);
+            if (transferModel.getIcons().get(2).isPremium()) {
                 holder.isPrime3.setVisibility(View.VISIBLE);
             } else {
                 holder.isPrime3.setVisibility(View.GONE);
             }
-            Glide.with(context).load(this.iconSetModelList.get(position).getIcons().get(3).getPreviewUrl()).into(holder.iconImage4);
-            if (this.iconSetModelList.get(position).getIcons().get(3).isPremium()) {
+            Glide.with(context).load(transferModel.getIcons().get(3).getPreviewUrl()).into(holder.iconImage4);
+            if (transferModel.getIcons().get(3).isPremium()) {
                 holder.isPrime4.setVisibility(View.VISIBLE);
             } else {
                 holder.isPrime4.setVisibility(View.GONE);

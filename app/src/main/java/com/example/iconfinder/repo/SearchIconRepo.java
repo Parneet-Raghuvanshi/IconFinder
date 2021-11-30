@@ -52,12 +52,18 @@ public class SearchIconRepo {
                             //---( Preview Url + Download Url )---//
                             JSONArray sizeArray = iconObject.optJSONArray("raster_sizes");
                             assert sizeArray != null;
-                            JSONObject size256 = sizeArray.optJSONObject(7);
-                            JSONArray formats = size256.optJSONArray("formats");
-                            assert formats != null;
-                            JSONObject finalSizes = formats.optJSONObject(0);
-                            tempModel.setPreviewUrl(finalSizes.optString("preview_url"));
-                            tempModel.setDownloadUrl(finalSizes.optString("download_url"));
+
+                            for (int j=0;j<sizeArray.length();j++){
+                                int size = sizeArray.optJSONObject(j).optInt("size");
+                                if (size > 201 && size < 301) {
+                                    JSONObject size256 = sizeArray.optJSONObject(j);
+                                    JSONArray formats = size256.optJSONArray("formats");
+                                    assert formats != null;
+                                    JSONObject finalSizes = formats.optJSONObject(0);
+                                    tempModel.setPreviewUrl(finalSizes.optString("preview_url"));
+                                    tempModel.setDownloadUrl(finalSizes.optString("download_url"));
+                                }
+                            }
 
                             //---( Name from first Tag )---//
                             JSONArray tags = iconObject.optJSONArray("tags");

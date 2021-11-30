@@ -104,7 +104,7 @@ public class SearchIcon extends AppCompatActivity {
                 totalItems = layoutManager.getItemCount();
                 scrollOutItems = layoutManager.findFirstVisibleItemPosition();
 
-                if(isScrolling && (currentItems + scrollOutItems == totalItems))
+                if(isScrolling && (currentItems + scrollOutItems == totalItems) && totalItems>39)
                 {
                     isScrolling = false;
                     scrollCount++;
