@@ -53,15 +53,16 @@ public class SearchIconRepo {
                             JSONArray sizeArray = iconObject.optJSONArray("raster_sizes");
                             assert sizeArray != null;
 
-                            for (int j=0;j<sizeArray.length();j++){
-                                int size = sizeArray.optJSONObject(j).optInt("size");
-                                if (size > 201 && size < 301) {
-                                    JSONObject size256 = sizeArray.optJSONObject(j);
+                            for (int j=sizeArray.length();j>0;j--){
+                                int size = sizeArray.optJSONObject(j-1).optInt("size");
+                                if (size < 300) {
+                                    JSONObject size256 = sizeArray.optJSONObject(j-1);
                                     JSONArray formats = size256.optJSONArray("formats");
                                     assert formats != null;
                                     JSONObject finalSizes = formats.optJSONObject(0);
                                     tempModel.setPreviewUrl(finalSizes.optString("preview_url"));
                                     tempModel.setDownloadUrl(finalSizes.optString("download_url"));
+                                    break;
                                 }
                             }
 
